@@ -1,0 +1,135 @@
+{
+  "colorScheme": "dark",
+  "fonts": [
+    {
+      "family": "SF Pro Display",
+      "role": "body"
+    },
+    {
+      "family": "SF Pro Text",
+      "role": "body"
+    },
+    {
+      "family": "Segoe UI",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#FF5F57",
+    "accent": "#FEBC2E",
+    "background": "#000000",
+    "textPrimary": "#000000",
+    "link": "#FEBC2E"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "SF Pro Display",
+      "heading": "SF Pro Display"
+    },
+    "fontStacks": {
+      "heading": [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        "sans-serif"
+      ],
+      "body": [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "104px",
+      "h2": "52.8px",
+      "body": "17.92px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "18px"
+  },
+  "components": {
+    "buttonPrimary": {
+      "background": "#FFFFFF",
+      "textColor": "#000000",
+      "borderRadius": "980px",
+      "borderRadiusCorners": {
+        "topLeft": "980px",
+        "topRight": "980px",
+        "bottomRight": "980px",
+        "bottomLeft": "980px"
+      },
+      "shadow": "rgba(255, 255, 255, 0.12) 0px 2px 12px 0px, rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset"
+    },
+    "buttonSecondary": {
+      "background": "#121212",
+      "textColor": "#D1D1D6",
+      "borderColor": "#1C1C1C",
+      "borderRadius": "980px",
+      "borderRadiusCorners": {
+        "topLeft": "980px",
+        "topRight": "980px",
+        "bottomRight": "980px",
+        "bottomLeft": "980px"
+      },
+      "shadow": "rgba(255, 255, 255, 0.1) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.25) 0px 4px 16px 0px"
+    }
+  },
+  "images": {
+    "logo": null,
+    "favicon": "File saved at: attached_assets/favicon.bin",
+    "ogImage": null
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 0,
+      "text": "Get Started",
+      "reasoning": "Button #0 with text 'Get Started' has a light background color (#FFFFFF) and action-oriented text, making it a strong candidate for the primary CTA."
+    },
+    "secondary": {
+      "index": 1,
+      "text": "Get Started Free",
+      "reasoning": "Button #1 with text 'Get Started Free' has a different background color (#121212) and complements the primary CTA by offering a free option, making it suitable as a secondary button."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "high",
+    "targetAudience": "developers and tech-savvy users"
+  },
+  "designSystem": {
+    "framework": "custom",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": false,
+      "llmSucceeded": false,
+      "finalSource": "none"
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}
