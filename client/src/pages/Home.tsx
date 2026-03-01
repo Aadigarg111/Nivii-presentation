@@ -407,9 +407,10 @@ const SCENES = [
 
 export default function VideoPresentation() {
   const [currentScene, setCurrentScene] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
   
   const requestRef = useRef<number>();
   const startTimeRef = useRef<number | null>(null);
@@ -456,22 +457,28 @@ export default function VideoPresentation() {
   }, [currentScene, isPlaying]);
 
   useEffect(() => {
-    // Start audio on mount
-    if (audioRef.current && isPlaying) {
-      audioRef.current.play().catch(err => {
-        console.log("Audio autoplay blocked:", err);
-      });
+    // Ensure audio plays when playing state changes
+    if (audioRef.current) {
+      if (isPlaying && audioReady) {
+        audioRef.current.play().catch(err => {
+          console.log("Audio play failed:", err);
+        });
+      }
     }
-  }, []);
+  }, [isPlaying, audioReady]);
 
   const togglePlay = () => {
+    if (!audioReady && audioRef.current) {
+      setAudioReady(true);
+    }
+    
     if (!isPlaying && progress >= 100) {
       setCurrentScene(0);
       setProgress(0);
       pausedTimeRef.current = 0;
       if (audioRef.current) {
         audioRef.current.currentTime = 0;
-        audioRef.current.play();
+        audioRef.current.play().catch(err => console.log("Audio play error:", err));
       }
     } else if (isPlaying) {
       const sceneDuration = SCENES[currentScene].duration;
@@ -481,7 +488,7 @@ export default function VideoPresentation() {
       }
     } else {
       if (audioRef.current) {
-        audioRef.current.play();
+        audioRef.current.play().catch(err => console.log("Audio play error:", err));
       }
     }
     setIsPlaying(!isPlaying);
@@ -495,17 +502,29 @@ export default function VideoPresentation() {
   };
 
   const jumpToScene = (index: number) => {
+    if (!audioReady && audioRef.current) {
+      setAudioReady(true);
+    }
     setCurrentScene(index);
     setProgress(0);
     pausedTimeRef.current = 0;
     startTimeRef.current = null;
     setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.play().catch(err => console.log("Audio play error:", err));
+    }
   };
 
   return (
     <div className="w-screen h-screen bg-background text-foreground flex flex-col overflow-hidden font-sans select-none">
       {/* Audio Element */}
-      <audio ref={audioRef} src="/presentation-audio.mp3" loop />
+      <audio 
+        ref={audioRef} 
+        src="/presentation-audio.mp3" 
+        loop 
+        preload="auto"
+        onLoadedData={() => setAudioReady(true)}
+      />
       
       {/* Video Progress Bar */}
       <div className="w-full flex h-1.5 bg-secondary/50 gap-1 z-50">
