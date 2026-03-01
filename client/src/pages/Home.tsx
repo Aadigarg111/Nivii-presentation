@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Zap, Monitor, Share2, Server, Globe, Lock, Shield, 
   EyeOff, QrCode, ArrowRight, Play, Pause, RotateCcw,
-  CheckCircle
+  CheckCircle, Volume2, VolumeX
 } from "lucide-react";
 import screenshot from "@assets/screenshot-1772215324785.png";
 
@@ -409,10 +409,12 @@ export default function VideoPresentation() {
   const [currentScene, setCurrentScene] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
   
   const requestRef = useRef<number>();
   const startTimeRef = useRef<number | null>(null);
   const pausedTimeRef = useRef<number>(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const animate = (time: number) => {
     if (!isPlaying) {
@@ -453,16 +455,43 @@ export default function VideoPresentation() {
     };
   }, [currentScene, isPlaying]);
 
+  useEffect(() => {
+    // Start audio on mount
+    if (audioRef.current && isPlaying) {
+      audioRef.current.play().catch(err => {
+        console.log("Audio autoplay blocked:", err);
+      });
+    }
+  }, []);
+
   const togglePlay = () => {
     if (!isPlaying && progress >= 100) {
       setCurrentScene(0);
       setProgress(0);
       pausedTimeRef.current = 0;
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      }
     } else if (isPlaying) {
       const sceneDuration = SCENES[currentScene].duration;
       pausedTimeRef.current = (progress / 100) * sceneDuration;
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    } else {
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
   };
 
   const jumpToScene = (index: number) => {
@@ -475,6 +504,9 @@ export default function VideoPresentation() {
 
   return (
     <div className="w-screen h-screen bg-background text-foreground flex flex-col overflow-hidden font-sans select-none">
+      {/* Audio Element */}
+      <audio ref={audioRef} src="/presentation-audio.mp3" loop />
+      
       {/* Video Progress Bar */}
       <div className="w-full flex h-1.5 bg-secondary/50 gap-1 z-50">
         {SCENES.map((scene, idx) => (
@@ -525,6 +557,13 @@ export default function VideoPresentation() {
             <span>/</span>
             <span>{SCENES.length}</span>
           </div>
+
+          <button 
+            onClick={toggleMute}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary hover:bg-secondary/70 hover:scale-105 active:scale-95 transition-all"
+          >
+            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          </button>
         </div>
       </div>
     </div>
